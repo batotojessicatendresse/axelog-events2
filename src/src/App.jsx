@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import htm from 'htm';
-import { icons as lucideIcons } from 'lucide';
+import * as LucideIcons from 'lucide-react';
 import { useCloudSync, cloudFiles } from './cloudSync.js';
 
 /* ---------- htm -> React (class/for) ---------- */
@@ -439,12 +439,9 @@ function Progress(props){
 /* ---------- composants de base ---------- */
 function Icon(props){
   const size=props.size||18;
-  const lib=lucideIcons;
-  const node=lib&&lib[props.name];
-  if(!node)return html`<span class="ic" style=${{width:size,height:size,display:'inline-block'}}></span>`;
-  const kids=(node.length===3&&node[0]==='svg')?node[2]:node;
-  return React.createElement('svg',{xmlns:'http://www.w3.org/2000/svg',width:size,height:size,viewBox:'0 0 24 24',fill:props.fill||'none',stroke:'currentColor',strokeWidth:props.sw||2,strokeLinecap:'round',strokeLinejoin:'round',className:'ic '+(props.className||''),'aria-hidden':'true'},
-    kids.map((n,i)=>React.createElement(n[0],Object.assign({key:i},n[1]))));
+  const C=LucideIcons[props.name];
+  if(!C||typeof C==='string')return html`<span class="ic" style=${{width:size,height:size,display:'inline-block'}}></span>`;
+  return React.createElement(C,{size:size,fill:props.fill||'none',strokeWidth:props.sw||2,className:'ic '+(props.className||''),'aria-hidden':'true'});
 }
 function Modal(props){
   const close=props.onClose;
